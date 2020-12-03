@@ -1,0 +1,39 @@
+# System Files
+.DS_Store
+Thumbs.db
+/public/hot
+/public/storage
+/storage/*.key
+.env
+.env.backup
+Homestead.json
+Homestead.yaml
+
+# Laravel IDE Helpers
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Dependencies
+/node_modules
+/vendor
+
+# Logs
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
