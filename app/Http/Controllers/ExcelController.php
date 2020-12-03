@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 
 
 use App\Service\CSVFileService;
+use App\Service\ExcelFileService;
 use Illuminate\Http\Request;
+
+
 
 /**
  * @method CSVFileService()
  */
-class ImportCSVController extends Controller
+class ExcelController extends Controller
 {
 
     /**
@@ -20,24 +23,23 @@ class ImportCSVController extends Controller
     public function read(Request $request)
     {
         $file_path = $request->get('file_path');
-        $csvFileService = new CSVFileService;
 
-        $data = $csvFileService->parseDataWithHeader($file_path);
+        $excelFileService = new ExcelFileService;
+        $data = $excelFileService->parseData($file_path);
         return $data;
     }
 
     /**
      * @param Request $request
-     *
+     * @return array|false|int
      */
     public function insert(Request $request)
     {
         $data = $this->read($request);
 
-        $csvFileService = new CSVFileService;
-        return $csvFileService->insertData($data);
+        $excelFileService = new ExcelFileService;
+        return $excelFileService->insertData($data);
     }
-
 
 
 

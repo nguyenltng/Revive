@@ -21,3 +21,6 @@ Route::get('/', function () {
 Route::get('/read-csv', [ImportCSVController::class, 'read']);
 Route::get('/insert', [ImportCSVController::class, 'insert']);
 
+
+Route::get('/read-excel', [\App\Http\Controllers\ExcelController::class, 'read']);
+Route::get('/insert-excel', [\App\Http\Controllers\ExcelController::class, 'insert']);

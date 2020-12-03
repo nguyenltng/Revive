@@ -17,6 +17,9 @@
         "laravel/passport": "^9.3",
         "laravel/tinker": "^2.5",
         "lcobucci/jwt": "3.3.3",
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.15",
+        "shuchkin/simplexlsx": "^0.8.19",
         "spatie/laravel-permission": "^3.18"
     },
     "require-dev": {
