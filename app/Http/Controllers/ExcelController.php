@@ -23,7 +23,6 @@ class ExcelController extends Controller
     public function read(Request $request)
     {
         $file_path = $request->get('file_path');
-
         $excelFileService = new ExcelFileService;
         $data = $excelFileService->parseData($file_path);
         return $data;
@@ -35,9 +34,9 @@ class ExcelController extends Controller
      */
     public function insert(Request $request)
     {
-        $data = $this->read($request);
-
+        $filePath = $request->get('file_path');
         $excelFileService = new ExcelFileService;
+        $data = $excelFileService->parseData($filePath);
         return $excelFileService->insertData($data);
     }
 

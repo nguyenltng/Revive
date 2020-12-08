@@ -32,9 +32,9 @@ class ImportCSVController extends Controller
      */
     public function insert(Request $request)
     {
-        $data = $this->read($request);
-
+        $filePath = $request->get('file_path');
         $csvFileService = new CSVFileService;
+        $data = $csvFileService->parseData($filePath);
         return $csvFileService->insertData($data);
     }
 

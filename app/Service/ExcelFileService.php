@@ -4,11 +4,11 @@
 namespace App\Service;
 
 
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExcelFileService extends CSVFileService
 {
-
     public function read($file_path)
     {
         $spreadsheet = IOFactory::load($file_path);

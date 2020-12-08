@@ -18,9 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 //Route::get('/read-file', [\App\Service\FileService::class, 'read']);
-Route::get('/read-csv', [ImportCSVController::class, 'read']);
-Route::get('/insert', [ImportCSVController::class, 'insert']);
+//Route::get('/read-csv', [ImportCSVController::class, 'read']);
+//Route::get('/insert', [ImportCSVController::class, 'insert']);
 
 
-Route::get('/read-excel', [\App\Http\Controllers\ExcelController::class, 'read']);
-Route::get('/insert-excel', [\App\Http\Controllers\ExcelController::class, 'insert']);
+Route::get('/read', [\App\Http\Controllers\ExcelController::class, 'read']);
+Route::get('/insert', [\App\Http\Controllers\ExcelController::class, 'insert']);
