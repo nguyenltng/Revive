@@ -23,9 +23,11 @@ class ExcelController extends Controller
     public function read(Request $request)
     {
         $filePath = $request->get('file_path');
-        $fileExt = explode(".",$filePath);
+        $ext = pathinfo($filePath, PATHINFO_EXTENSION);
 
-        switch ($fileExt[1]) {
+        print $ext;
+
+        switch ($ext) {
             case 'csv':
                 $csvFileService = new CSVFileService;
                 $data = $csvFileService->parseDataWithHeader($filePath);
