@@ -37,8 +37,4 @@ class ImportCSVController extends Controller
         $data = $csvFileService->parseData($filePath);
         return $csvFileService->insertData($data);
     }
-
-
-
-
 }

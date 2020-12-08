@@ -39,7 +39,6 @@ class CSVFileService extends FileService
             $array[]  = array_combine($member[0], $member[$i]);
         }
 
-
         return $array;
     }
 
@@ -50,7 +49,6 @@ class CSVFileService extends FileService
     public function validate(Array $array)
     {
         $error = array();
-
         foreach ($array as $key=>$value)
         {
             $validator = Validator::make($value, [
@@ -72,7 +70,6 @@ class CSVFileService extends FileService
      */
     public function insertData($array)
     {
-
         if($this->validate($array) != 1){
             return $this->validate($array);
         }else{
