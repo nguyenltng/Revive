@@ -9,21 +9,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExcelFileService extends CSVFileService
 {
-    public function read($filePath)
+    /**
+     * @param $filePath
+     * @return array|string|null
+     */
+    public function parse($filePath)
     {
         $spreadsheet = IOFactory::load($filePath);
         $data = $spreadsheet->getActiveSheet()->toArray();
         return $data;
     }
-
-    public function parseData($filePath)
-    {
-        $row = $this->read($filePath);
-
-        for($i = 1; $i < sizeof($row); $i++){
-            $data[]  = array_combine($row[0], $row[$i]);
-        }
-        return $data;
-    }
-
 }

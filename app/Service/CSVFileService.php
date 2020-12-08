@@ -16,7 +16,7 @@ class CSVFileService extends FileService
      * @param $file_path
      * @return mixed
      */
-    public function parseData($file_path)
+    public function parse($file_path)
     {
         $content = $this->read($file_path);
         $contents = explode("\r\n", $content);
@@ -31,9 +31,9 @@ class CSVFileService extends FileService
      * @param $file_path
      * @return mixed
      */
-    public function parseDataWithHeader($file_path)
+    public function parseWithHeader($file_path)
     {
-        $member = $this->parseData($file_path);
+        $member = $this->parse($file_path);
 
         for($i = 1; $i < sizeof($member); $i++){
             $array[]  = array_combine($member[0], $member[$i]);
@@ -84,7 +84,4 @@ class CSVFileService extends FileService
         }
         return $users;
     }
-
-
-
 }

@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-//Route::get('/read-file', [\App\Service\FileService::class, 'read']);
-//Route::get('/read-csv', [ImportCSVController::class, 'read']);
-//Route::get('/insert', [ImportCSVController::class, 'insert']);
 
-
-Route::get('/read', [\App\Http\Controllers\ExcelController::class, 'read']);
-Route::get('/insert', [\App\Http\Controllers\ExcelController::class, 'insert']);
+Route::get('/read', [\App\Http\Controllers\ImportFileController::class, 'read']);
+Route::get('/insert', [\App\Http\Controllers\ImportFileController::class, 'insert']);
