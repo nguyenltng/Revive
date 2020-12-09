@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 
 
 use App\Factories\FileImportFactory;
-use App\Service\CSVFileService;
-use App\Service\ExcelFileService;
 use Illuminate\Http\Request;
 
 
@@ -20,9 +18,9 @@ class ImportFileController extends Controller
     public function __construct(FileImportFactory $fileImportFactory) {
         $this->fileImportFactory = $fileImportFactory;
     }
+
     /**
      * @param Request $request
-     * @param FileImportFactory $fileImportFactory
      * @return mixed
      * @throws \Exception
      */
@@ -32,20 +30,20 @@ class ImportFileController extends Controller
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
 
         if($filePath == null){
-            $service = $this->fileImportFactory->makeService('xlsx');
-            $service->parse($request->file('file')->getContent());
+            $etx = explode(".", $request->file('file')->getClientOriginalName())[1];
+            $service = $this->fileImportFactory->makeService($etx);
+            $data = $service->parse($request->file('file')->getContent());
         }else{
             $service = $this->fileImportFactory->makeService($ext);
             $data = $service->parseWithHeader($filePath);
         }
-
         return $data;
     }
 
     /**
      * @param Request $request
      * @return array|false|int
-     * @throws \Exception
+     * @throws Exception
      */
     public function insert(Request $request)
     {
@@ -55,5 +53,5 @@ class ImportFileController extends Controller
         $data = $service->parseWithHeader($filePath);
         return $service->insertData($data);
     }
-    
+
 }

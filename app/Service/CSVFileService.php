@@ -11,7 +11,16 @@ use phpseclib\Crypt\Hash;
 
 class CSVFileService extends FileService
 {
+    public function parse(string $fileContent) {
+        $tempFilePath = 'E:/tmp';
+        $file = fopen($tempFilePath, 'w');
+        fwrite($file, $fileContent);
+        fclose($file);
 
+        $data = $this->parseWithHeader($tempFilePath);
+        unlink($tempFilePath);
+        return $data;
+    }
     /**
      * @param $file_path
      * @return mixed
