@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use Maatwebsite\Excel\Facades\Excel;
