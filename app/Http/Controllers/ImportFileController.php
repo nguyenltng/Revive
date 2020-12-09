@@ -30,8 +30,15 @@ class ImportFileController extends Controller
     {
         $filePath = $request->get('file_path');
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-        $service = $this->fileImportFactory->makeService($ext);
-        $data = $service->read($filePath);
+
+        if($filePath == null){
+            $service = $this->fileImportFactory->makeService('xlsx');
+            $service->parse($request->file('file')->getContent());
+        }else{
+            $service = $this->fileImportFactory->makeService($ext);
+            $data = $service->parseWithHeader($filePath);
+        }
+
         return $data;
     }
 
@@ -48,7 +55,5 @@ class ImportFileController extends Controller
         $data = $service->parseWithHeader($filePath);
         return $service->insertData($data);
     }
-
-
-
+    
 }
