@@ -24,9 +24,8 @@ class MailRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
+            'file' => 'required|file',
+            'message' => 'required'
         ];
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Factories\FileImportFactory;
 use App\Http\Requests\MailRequest;
 use App\Mail\sendMail;
 use App\Models\User;
@@ -12,10 +13,16 @@ use Illuminate\Support\Facades\Validator;
 
 class MailController
 {
+    /**
+     * @param MailRequest $request
+     * @throws \Exception
+     */
     function send(MailRequest $request)
     {
-        $users[] = User::query()->find(5)->toArray();
-        $this->sendTo($request, $users);
+        $fileImport = new FileImportFactory();
+        $data = (new ImportFileController($fileImport))->read($request);
+
+        $this->sendTo($request, $data);
     }
 
     function sendTo(MailRequest $request, Array $user)
