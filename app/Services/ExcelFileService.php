@@ -4,16 +4,18 @@
 namespace App\Services;
 
 
-use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
 
 class ExcelFileService extends CSVFileService
 {
+
+
     /**
      * @param $filePath
      * @return array|string|null
      */
-    public function parse($filePath)
+    public function parseFromPath($filePath)
     {
         $spreadsheet = IOFactory::load($filePath);
         $data = $spreadsheet->getActiveSheet()->toArray();
