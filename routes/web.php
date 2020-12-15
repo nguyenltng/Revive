@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/read', [\App\Http\Controllers\ImportFileController::class, 'read']);
 Route::get('/insert', [\App\Http\Controllers\ImportFileController::class, 'insert']);
+Route::get('/test', [\App\test\Book::class, 'test']);

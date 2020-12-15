@@ -28,14 +28,13 @@ class ImportFileController extends Controller
     {
         $filePath = $request->get('file_path');
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-
         if($filePath == null){
-            $etx = explode(".", $request->file('file')->getClientOriginalName())[1];
+            $etx = $request->file('file')->getClientOriginalExtension();
             $service = $this->fileImportFactory->makeService($etx);
             $data = $service->parse($request->file('file')->getContent());
         }else{
             $service = $this->fileImportFactory->makeService($ext);
-            $data = $service->parseWithHeader($filePath);
+            $data = $service->parseFromPath($filePath);
         }
         return $data;
     }

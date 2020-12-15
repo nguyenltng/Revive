@@ -17,8 +17,15 @@ class ExcelFileService extends CSVFileService
      */
     public function parseFromPath($filePath)
     {
-        $spreadsheet = IOFactory::load($filePath);
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($filePath);
+        $reader->setReadDataOnly(true);
+
+        $spreadsheet = $reader->load($filePath);
         $data = $spreadsheet->getActiveSheet()->toArray();
-        return $data;
+
+        for($i = 1; $i < sizeof($data); $i++){
+            $array[]  = array_combine($data[0], $data[$i]);
+        }
+        return $array;
     }
 }
