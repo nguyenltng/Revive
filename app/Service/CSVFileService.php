@@ -3,11 +3,8 @@
 
 namespace App\Service;
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use phpseclib\Crypt\Hash;
+use mysqli;
 
 class CSVFileService extends FileService
 {
@@ -35,7 +32,7 @@ class CSVFileService extends FileService
             $member[]  = explode(",", $line[$i]);
             $data[]  = array_combine($member[0], $member[$i]);
         }
-        return  $data;
+        return $data;
     }
 
 
@@ -70,15 +67,18 @@ class CSVFileService extends FileService
         if($this->validate($array) != 1){
             return $this->validate($array);
         }else{
-            foreach ($array as $key=>$value){
-                $user = User::query()->create([
-                    'name' => $value['name'],
-                    'email' => $value['email'],
-                    'password' => bcrypt($value['password']),
-                ]);
-                $users[] = $user->id;
+            $mysqli = new mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+
+            $inserts = array();
+            foreach($array as $key => $value) {
+                $inserts[] = "('".($value["name"])."','".($value["email"])."','".bcrypt($value['password'])."')";
+            }
+            $query = "INSERT INTO users(name,email,password) VALUES".implode(",",$inserts);
+            if(!$mysqli->query($query)){
+                echo $mysqli->error;
             }
         }
-        return $users;
+        return $mysqli->affected_rows;
+
     }
 }
