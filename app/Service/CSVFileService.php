@@ -3,44 +3,38 @@
 
 namespace App\Service;
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use phpseclib\Crypt\Hash;
+use mysqli;
 
 class CSVFileService extends FileService
 {
+    public function parse(string $fileContent) {
+        $tempFilePath = 'E:/tmp';
+        $file = fopen($tempFilePath, 'w');
+        fwrite($file, $fileContent);
+        fclose($file);
 
+        $data = $this->parseFromPath($tempFilePath);
+        unlink($tempFilePath);
+        return $data;
+    }
     /**
      * @param $file_path
      * @return mixed
      */
-    public function parse($file_path)
+    public function parseFromPath($file_path)
     {
         $content = $this->read($file_path);
-        $contents = explode("\r\n", $content);
+        $line = explode("\r\n", $content);
 
-        for($i = 0; $i < sizeof($contents); $i++){
-            $member[]  = explode(",", $contents[$i]);
+        $member[0]  = explode(",", $line[0]);
+        for($i = 1; $i < sizeof($line); $i++){
+            $member[]  = explode(",", $line[$i]);
+            $data[]  = array_combine($member[0], $member[$i]);
         }
-        return $member;
+        return $data;
     }
 
-    /**
-     * @param $file_path
-     * @return mixed
-     */
-    public function parseWithHeader($file_path)
-    {
-        $member = $this->parse($file_path);
-
-        for($i = 1; $i < sizeof($member); $i++){
-            $array[]  = array_combine($member[0], $member[$i]);
-        }
-
-        return $array;
-    }
 
     /**
      * @param array $array
@@ -73,15 +67,18 @@ class CSVFileService extends FileService
         if($this->validate($array) != 1){
             return $this->validate($array);
         }else{
-            foreach ($array as $key=>$value){
-                $user = User::query()->create([
-                    'name' => $value['name'],
-                    'email' => $value['email'],
-                    'password' => bcrypt($value['password']),
-                ]);
-                $users[] = $user->id;
+            $mysqli = new mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+
+            $inserts = array();
+            foreach($array as $key => $value) {
+                $inserts[] = "('".($value["name"])."','".($value["email"])."','".bcrypt($value['password'])."')";
+            }
+            $query = "INSERT INTO users(name,email,password) VALUES".implode(",",$inserts);
+            if(!$mysqli->query($query)){
+                echo $mysqli->error;
             }
         }
-        return $users;
+        return $mysqli->affected_rows;
+
     }
 }

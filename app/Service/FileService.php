@@ -10,16 +10,9 @@ class FileService
      * @param $file_path
      * @return string|null
      */
-    public function read($file_path) {
-
-        $file = fopen($file_path, 'r');
-
-        $content = null;
-        while(! feof($file))
-        {
-            $line = fgets($file);
-            $content = $content . $line;
-        }
+    public function read($file_path)
+    {
+        $content = file_get_contents($file_path);
         return $content;
 
     }
