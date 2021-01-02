@@ -3,6 +3,7 @@
 
 namespace App\Service;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use mysqli;
 
@@ -67,18 +68,16 @@ class CSVFileService extends FileService
         if($this->validate($array) != 1){
             return $this->validate($array);
         }else{
-            $mysqli = new mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
-
-            $inserts = array();
-            foreach($array as $key => $value) {
-                $inserts[] = "('".($value["name"])."','".($value["email"])."','".bcrypt($value['password'])."')";
-            }
-            $query = "INSERT INTO users(name,email,password) VALUES".implode(",",$inserts);
-            if(!$mysqli->query($query)){
-                echo $mysqli->error;
+            User::query()->insert($array);
+            foreach ($array as $key=>$value){
+                $user = User::query()->create([
+                    'name' => $value['name'],
+                    'email' => $value['email'],
+                    'password' => bcrypt($value['password']),
+                ]);
+                $users[] = $user->id;
             }
         }
-        return $mysqli->affected_rows;
-
+        return $users;
     }
 }

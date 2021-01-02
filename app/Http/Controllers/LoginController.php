@@ -14,8 +14,11 @@ class LoginController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:55',
             'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required',
         ]);
+        if ($validatedData->fails()) {
+            return $validatedData->errors();
+        }
 
         $validatedData['password'] = bcrypt($request->get('password'));
         $user = User::create($validatedData);
