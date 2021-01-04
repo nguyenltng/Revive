@@ -4,41 +4,35 @@
 namespace App\Http\Controllers;
 
 
-use App\Factories\FileImportFactory;
-use App\Http\Requests\MailRequest;
 use App\Mail\sendMail;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class MailController
 {
-    /**
-     * @param MailRequest $request
-     * @throws \Exception
-     */
-    function send(MailRequest $request)
+    function send(Request $request)
     {
-        $fileImport = new FileImportFactory();
-        $data = (new ImportFileController($fileImport))->read($request);
-
-        $this->sendTo($request, $data);
-    }
-
-    function sendTo(MailRequest $request, Array $user)
-    {
-        foreach ($user as $item) {
+        $validator = Validator::make($request->all(),[
+            'name'     => 'required',
+            'email'    => 'required|email',
+            'message' => 'required',
+        ]);
+        if($validator->failed()){
+            return response()->json([
+                'message' => $validator->messages()->toJson(),
+            ], 422);
+        }else{
             $data = array(
-                'name' => $item['name'],
+                'name' => $request->get('name'),
                 'message' => $request->get('message')
             );
-            Mail::to($item['email'])
+            Mail::to($request->get('email'))
                 ->send(new sendMail($data));
+            return response()->json([
+                'message' => 'Send email success !!',
+            ], 200);
         }
-
-        return response()->json([
-            'message' => 'Send email success !!',
-        ], 200);
 
     }
 

@@ -23,6 +23,8 @@ Route::post('/register', [\App\Http\Controllers\LoginController::class, 'registe
 
 Route::get('/role', [\App\Http\Controllers\RoleController::class, 'role']);
 
+Route::post('/send-email',[\App\Http\Controllers\MailController::class, 'send']);
+
 
 
 Route::get('/read-file', [\App\Service\FileService::class, 'read']);
