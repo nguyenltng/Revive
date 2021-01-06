@@ -25,4 +25,5 @@ Route::get('/role', [\App\Http\Controllers\RoleController::class, 'role']);
 
 
 
-Route::get('/read-file', [\App\Service\FileService::class, 'read']);
+Route::post('/read', [\App\Http\Controllers\ImportFileController::class, 'read']);
+Route::post('/insert', [\App\Http\Controllers\ImportFileController::class, 'insert']);

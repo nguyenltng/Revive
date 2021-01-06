@@ -50,7 +50,6 @@ class CSVFileService extends FileService
                 "name" => "required|min:4|max:50",
                 "email" => "required|email|unique:users,email",
                 "password" => "required|min:8",
-                "phone" => "nullable|integer"
             ]);
 
             if($validator->fails()) {
@@ -68,7 +67,6 @@ class CSVFileService extends FileService
         if($this->validate($array) != 1){
             return $this->validate($array);
         }else{
-            User::query()->insert($array);
             foreach ($array as $key=>$value){
                 $user = User::query()->create([
                     'name' => $value['name'],
