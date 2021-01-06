@@ -5,24 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
 
     public function register(Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(),[
             'name' => 'required|max:55',
             'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required',
         ]);
+        if ($validatedData->fails()) {
+            return $validatedData->errors();
+        }else{
+            $user = User::create([
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => bcrypt($request->get('password')),
+            ]);
+            $accessToken = $user->createToken('authToken')->accessToken;
 
-        $validatedData['password'] = bcrypt($request->get('password'));
-        $user = User::create($validatedData);
+            return response([ 'user' => $user, 'access_token' => $accessToken]);
+        }
 
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return response([ 'user' => $user, 'access_token' => $accessToken]);
     }
 
     public function login(Request $request)
